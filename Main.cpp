@@ -27,6 +27,7 @@ void Pathfinder()
 		arrayValues[i] = 999;
 	}
 
+	system("cls");
 	std::cout << "Input two points (among a, b, c, d) followed by the cost (from 1 to 9) between them. \n";
 	std::cout << "Example: (a, b, 5) \n";
 	std::cout << "Please do this 4 times: \n\n";
@@ -127,15 +128,18 @@ void Pathfinder()
 		cheapestCost = currentCost;
 		path[1] = yNum;
 	}
-	std::cout << "\nDistance from: " << xNum << " to " << yNum << " is: " << currentCost;
+	
+
+	// Commenting out my results-checking
+	// std::cout << "\nDistance from: " << xNum << " to " << yNum << " is: " << currentCost;
+
+	// for (int i = 0; i < 16; i++)
+	// {
+	//		std::cout << "\nValue " << i << " = " << arrayValues[i];
+	// }
 
 
 	// 2 Step Solution Done
-
-	for (int i = 0; i < 16; i++)
-	{
-		std::cout << "\nValue " << i << " = " << arrayValues[i];
-	}
 
 	int firstHalf = 0;
 	int secondHalf = 0;
@@ -153,58 +157,66 @@ void Pathfinder()
 			path[2] = yNum;
 		}
 		
-		std::cout << "\nDistance from: " << xNum << " to " << a << " is: " << firstHalf;
-		std::cout << "\nDistance from: " << a << " to " << yNum << " is: " << secondHalf;
+		// Commenting out my results-checking
+		// std::cout << "\nDistance from: " << xNum << " to " << a << " is: " << firstHalf;
+		// std::cout << "\nDistance from: " << a << " to " << yNum << " is: " << secondHalf;
 	}
 
 
-	//// 3 Step Solution -- Still Working on it will submit for 3rd Challenge
+	// 3 Step Solution Done
 
-	//int stop1 = 4;
-	//int stop2 = 4;
+	int second = 4;
+	int third = 4;
 
-	//for (int b = 0; b < 4; b++)		// cycles from a b c d
-	//{
-	//	if (xNum != b) && (yNum != b) && (stop1 != b))		// if first and second and last aren't
-	//	{													// then assign to second
-	//		stop1 = b;
-	//	}
-	//	else if ((xNum != b) && (yNum != b)) 				// otherwise if first and last aren't
-	//	{													// then assign to third
-	//		stop2 = b;
-	//	}
-	//}
+	// Setting second and third to whichever ones xNum and yNum aren't
 
-	//int cost1 = arrayValues[xNum + (stop1 * 4)];
-	//int cost2 = arrayValues[stop1 + (stop2 * 4)];
-	//int cost3 = arrayValues[stop2 + (yNum * 4)];
-	//currentCost = cost1 + cost2 + cost3;
-	// 
-	//if (currentCost < cheapestCost)
-	//{
-	//	cheapestCost = currentCost;
-	//}
-	//
-	//std::cout << "\nDistance from: " << xNum << " to " << stop1 << " is: " << cost1;
-	//std::cout << "\nDistance from: " << stop1 << " to " << stop2 << " is: " << cost2;
-	//std::cout << "\nDistance from: " << stop2 << " to " << yNum << " is: " << cost3;
-	//
-	//int cost4 = arrayValues[xNum + (stop2 * 4)];
-	//int cost5 = arrayValues[stop2 + (stop1 * 4)];
-	//int cost6 = arrayValues[stop1 + (yNum * 4)];
-	//currentCost = cost4 + cost5 + cost6;
+	for (int i = 0; i < 4; i++)
+	{
+		if ((xNum != i) && (yNum != i))
+		{
+			second = i;
+		}
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		if ((xNum != i) && (yNum != i) && (second != i))
+		{
+			third = i;
+		}
+	}
 
-	//std::cout << "\nDistance from: " << xNum << " to " << stop2 << " is: " << cost4;
-	//std::cout << "\nDistance from: " << stop2 << " to " << stop1 << " is: " << cost5;
-	//std::cout << "\nDistance from: " << stop1 << " to " << yNum << " is: " << cost6;
+	int cost1 = 999;
+	int cost2 = 999;
 
+	cost1 = arrayValues[xNum + (second * 4)] + arrayValues[second + (third * 4)] + arrayValues[third + (yNum * 4)];
+	cost2 = arrayValues[xNum + (third * 4)] + arrayValues[third + (second * 4)] + arrayValues[second + (yNum * 4)];
 
+	if (cost1 < cheapestCost)
+	{
+		cheapestCost = cost1;
+		path[1] = second;
+		path[2] = third;
+		path[3] = yNum;
+	}
 
+	else if (cost2 < cheapestCost)
+	{
+		cheapestCost = cost2;
+		path[1] = third;
+		path[2] = second;
+		path[3] = yNum;
+	}
+	
 
 
 	// Reporting Results
 
-	if (cheapestCost < 999)
+	if (xNum == yNum)   // Zero Step
+	{
+		std::cout << "\nThe Starting Point is the Ending Point";
+		std::cout << "\nThe Cheapest Cost is: None";
+	}
+	else if (cheapestCost < 999)
 		{
 			std::cout << "\nThe Cheapest Cost is: " << cheapestCost;
 			std::cout << "\nThe Optimal Path is: ";
@@ -231,6 +243,8 @@ void Pathfinder()
 		}
 	else
 		{
-			std::cout << "\nThere is no path available.";
+			std::cout << "\nThere is no path available. \n";
 		}
+
+	std::cout << "\n\n";
 }
